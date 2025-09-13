@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Laundry Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🧺 Campus Laundry System</h1>
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span id="userName"></span>
+                <span id="userRole"></span>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <!-- Login/Signup Forms -->
+        <div id="authSection" class="auth-section">
+            <div class="auth-tabs">
+                <button id="loginTab" class="tab-btn active">Login</button>
+                <button id="signupTab" class="tab-btn">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword">
+                </div>
+                <div class="form-group">
+                    <label for="loginRole">Role:</label>
+                    <select id="loginRole" required>
+                        <option value="">Select Role</option>
+                        <option value="student">Student</option>
+                        <option value="vendor">Laundry Staff</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <label for="signupName">Full Name:</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email:</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password:</label>
+                    <input type="password" id="signupPassword">
+                </div>
+                <div class="form-group">
+                    <label for="signupRole">Role:</label>
+                    <select id="signupRole" required>
+                        <option value="">Select Role</option>
+                        <option value="student">Student</option>
+                        <option value="vendor">Laundry Staff</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="dashboard" style="display: none;">
+            <h2>Student Dashboard</h2>
+            
+            <!-- Current Order Status -->
+            <div class="card">
+                <h3>Current Order Status</h3>
+                <div id="currentOrderStatus">
+                    <p class="status-message">No active order</p>
+                </div>
+            </div>
+
+            <!-- New Order Form -->
+            <div id="newOrderForm" class="card">
+                <h3>Place New Order</h3>
+                <form id="laundryOrderForm">
+                    <div class="form-group">
+                        <label for="laundryItems">Laundry Items:</label>
+                        <textarea id="laundryItems" placeholder="e.g., 2 shirts, 1 jeans, 3 t-shirts" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialInstructions">Special Instructions:</label>
+                        <textarea id="specialInstructions" placeholder="Any special care instructions..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </form>
+            </div>
+
+            <!-- Order History -->
+            <div class="card">
+                <h3>Order History</h3>
+                <div id="orderHistory">
+                    <p>No previous orders</p>
+                </div>
+            </div>
+
+            <!-- QR Code Display -->
+            <div id="qrCodeSection" class="card" style="display: none;">
+                <h3>Your QR Code</h3>
+                <div id="qrCode"></div>
+                <p>Show this QR code to laundry staff for pickup</p>
+            </div>
+        </div>
+
+        <!-- Vendor Dashboard -->
+        <div id="vendorDashboard" class="dashboard" style="display: none;">
+            <h2>Laundry Staff Dashboard</h2>
+            
+            <!-- Pending Requests -->
+            <div class="card">
+                <h3>Pending Requests</h3>
+                <div id="pendingRequests">
+                    <p>No pending requests</p>
+                </div>
+            </div>
+
+            <!-- Active Orders -->
+            <div class="card">
+                <h3>Active Orders</h3>
+                <div id="activeOrders">
+                    <p>No active orders</p>
+                </div>
+            </div>
+
+            <!-- QR Scanner -->
+            <div class="card">
+                <h3>QR Scanner</h3>
+                <div class="qr-scanner">
+                    <input type="text" id="qrInput" placeholder="Scan or enter QR code">
+                    <button id="scanQrBtn" class="btn btn-primary">Process QR</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notifications" class="notifications"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
