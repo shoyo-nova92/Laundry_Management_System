@@ -618,3 +618,42 @@ body {
 .mt-1 { margin-top: 10px; }
 .mt-2 { margin-top: 20px; }
 .hidden { display: none !important; }
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.order-table th,
+.order-table td {
+  border: 1px solid #e1e5e9;
+  padding: 10px 15px;
+  text-align: left;
+}
+
+.qty-btn {
+  background-color: #667eea;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: bold;
+  user-select: none;
+  border-radius: 5px;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+.qty-btn:hover {
+  background-color: #5a67d8;
+}
+
+.qty-input {
+  width: 50px;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid #e1e5e9;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+}

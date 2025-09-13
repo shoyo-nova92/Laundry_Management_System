@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Laundry Management System</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Laundry System</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <h1>🧺 Campus Laundry System</h1>
-            <div class="user-info" id="userInfo" style="display: none;">
-                <span id="userName"></span>
-                <span id="userRole"></span>
-                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
-            </div>
-        </header>
+  <header class="header">
+    <h1>Campus Laundry System</h1>
+    <div id="userInfo" class="user-info" style="display:none;">
+      <span id="userName"></span>
+      <span id="userRole"></span>
+      <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+    </div>
+  </header>
 
+<<<<<<< HEAD
         <!-- Login/Signup Forms -->
         <div id="authSection" class="auth-section">
             <div class="auth-tabs">
@@ -164,8 +163,164 @@
 
         <!-- Notifications -->
         <div id="notifications" class="notifications"></div>
+=======
+  <!-- Auth Section (Login/Signup) -->
+  <section id="authSection" class="auth-section">
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button id="loginTab" class="tab-btn active">Login</button>
+      <button id="signupTab" class="tab-btn">Sign Up</button>
+>>>>>>> 6af045d91451ceaee815c404ded2dd850cfffe64
     </div>
 
-    <script src="app.js"></script>
+    <!-- Login Form -->
+    <form id="loginForm" class="auth-form">
+      <h2>Login</h2>
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" required />
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" required />
+      </div>
+      <div class="form-group">
+        <label for="loginRole">Role</label>
+        <select id="loginRole" required>
+          <option value="student">Student</option>
+          <option value="vendor">Laundry Staff</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+    <!-- SignUp Form -->
+    <form id="signupForm" class="auth-form" style="display:none;">
+      <h2>Sign Up</h2>
+      <div class="form-group">
+        <label for="signupName">Name</label>
+        <input id="signupName" type="text" required />
+      </div>
+      <div class="form-group">
+        <label for="signupEmail">Email</label>
+        <input id="signupEmail" type="email" required />
+      </div>
+      <div class="form-group">
+        <label for="signupPassword">Password</label>
+        <input id="signupPassword" type="password" required />
+      </div>
+      <div class="form-group">
+        <label for="signupRole">Role</label>
+        <select id="signupRole" required>
+          <option value="student">Student</option>
+          <option value="vendor">Laundry Staff</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+  </section>
+
+  <!-- Student Dashboard -->
+  <section id="studentDashboard" style="display:none;" class="dashboard container">
+    <h2>Student Dashboard</h2>
+    
+    <div class="card">
+      <h3>Current Order Status</h3>
+      <div id="currentOrderStatus">No active order</div>
+    </div>
+
+    <!-- Updated Place New Order Section -->
+    <div id="placeOrderSection" class="card">
+      <h3>Place New Order</h3>
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-item="Shirts">
+            <td>Shirts</td>
+            <td>
+              <button class="qty-btn minus">-</button>
+              <input type="number" class="qty-input" value="0" min="0" readonly />
+              <button class="qty-btn plus">+</button>
+            </td>
+          </tr>
+          <tr data-item="Jeans">
+            <td>Jeans</td>
+            <td>
+              <button class="qty-btn minus">-</button>
+              <input type="number" class="qty-input" value="0" min="0" readonly />
+              <button class="qty-btn plus">+</button>
+            </td>
+          </tr>
+          <tr data-item="T-Shirts">
+            <td>T-Shirts</td>
+            <td>
+              <button class="qty-btn minus">-</button>
+              <input type="number" class="qty-input" value="0" min="0" readonly />
+              <button class="qty-btn plus">+</button>
+            </td>
+          </tr>
+          <tr data-item="Kurta">
+            <td>Kurta</td>
+            <td>
+              <button class="qty-btn minus">-</button>
+              <input type="number" class="qty-input" value="0" min="0" readonly />
+              <button class="qty-btn plus">+</button>
+            </td>
+          </tr>
+          <tr data-item="Pyjama">
+            <td>Pyjama</td>
+            <td>
+              <button class="qty-btn minus">-</button>
+              <input type="number" class="qty-input" value="0" min="0" readonly />
+              <button class="qty-btn plus">+</button>
+            </td>
+          </tr>
+          <tr data-item="Track Pant">
+            <td>Track Pant</td>
+            <td>
+              <button class="qty-btn minus">-</button>
+              <input type="number" class="qty-input" value="0" min="0" readonly />
+              <button class="qty-btn plus">+</button>
+            </td>
+          </tr>
+          <tr data-item="Shorts">
+            <td>Shorts</td>
+            <td>
+              <button class="qty-btn minus">-</button>
+              <input type="number" class="qty-input" value="0" min="0" readonly />
+              <button class="qty-btn plus">+</button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td><input type="number" id="totalQty" value="0" readonly /></td>
+          </tr>
+        </tfoot>
+      </table>
+      <button id="confirmOrderBtn" class="btn btn-primary mt-2">Confirm your order</button>
+    </div>
+
+    <div class="card">
+      <h3>Order History</h3>
+      <div id="orderHistory">No previous orders</div>
+    </div>
+  </section>
+
+  <!-- Vendor Dashboard -->
+  <section id="vendorDashboard" style="display:none;" class="dashboard container">
+    <h2>Laundry Staff Dashboard</h2>
+    <!-- Vendor features here -->
+  </section>
+
+  <div class="notifications" id="notifications"></div>
+
+  <script src="app.js"></script>
 </body>
 </html>
