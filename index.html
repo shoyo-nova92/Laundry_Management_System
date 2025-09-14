@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Laundry Management System</title>
+    <title>WashBell</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1>🧺 Campus Laundry System</h1>
+            <div class="header-left">
+                <img src="washbell_logo.png" alt="WashBell Logo" class="logo">
+                <h1>WashBell</h1>
+            </div>
             <div class="user-info" id="userInfo" style="display: none;">
-                <span id="userName"></span>
-                <span id="userRole"></span>
-                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                <div class="user-details">
+                    <span id="userName" class="user-name">atulya</span>
+                    <span id="userRole" class="user-role">Student</span>
+                </div>
+                <button id="logoutBtn" class="btn btn-logout">Logout</button>
             </div>
         </header>
 

@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            background-color: #f5f5f5;
+            background: white;
             margin: 0;
             padding: 20px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
         }
         
         .qr-container {
             max-width: 500px;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(26, 35, 126, 0.2);
+            animation: fadeInUp 0.8s ease-out;
         }
         
         .qr-header {
@@ -30,7 +32,7 @@
         .qr-title {
             font-size: 1.8rem;
             font-weight: 600;
-            color: #333;
+            color: #1a237e;
             margin-bottom: 10px;
         }
         
@@ -56,7 +58,7 @@
         .order-id {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #333;
+            color: #1a237e;
             margin-bottom: 30px;
         }
         
@@ -82,7 +84,7 @@
         
         .detail-value {
             font-size: 1rem;
-            color: #333;
+            color: #1a237e;
             font-weight: 600;
         }
         
@@ -109,7 +111,7 @@
         .item-list li {
             padding: 8px 0;
             border-bottom: 1px solid #e9ecef;
-            color: #333;
+            color: #1a237e;
             font-weight: 500;
         }
         
@@ -139,18 +141,21 @@
         }
         
         .btn-back {
-            background: #6c757d;
+            background: #000000;
             color: white;
             border: none;
             padding: 12px 24px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         .btn-back:hover {
-            background: #5a6268;
+            background: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
         
         @media (max-width: 600px) {
