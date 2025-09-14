@@ -3,6 +3,12 @@ class LaundryApp {
     constructor() {
         this.currentUser = null;
         this.nextStudentNumber = 0;
+        this.laundryItems = [
+            'PANT', 'JEANS', 'SHIRT', 'T-SHIRT', 'KURTA', 'PYJAMA', 
+            'TRACK PANT', 'SHORTS', 'UNDERGARMENT', 'BOXER', 'SOCKS PAIR', 
+            'BED SHEET', 'PILLOW COVER', 'HAND TOWEL', 'HANDKERCHIEF', 'BATH TOWEL', 'OTHER'
+        ];
+        this.currentOrderItems = {}; // Track current order items
         this.init();
     }
 
@@ -14,19 +20,39 @@ class LaundryApp {
 
     // Data Management
     loadData() {
-        const users = localStorage.getItem('laundry_users');
-        const orders = localStorage.getItem('laundry_orders');
-        const nextStudentNum = localStorage.getItem('laundry_next_student_number');
+        try {
+            const users = localStorage.getItem('laundry_users');
+            const orders = localStorage.getItem('laundry_orders');
+            const nextStudentNum = localStorage.getItem('laundry_next_student_number');
 
-        this.users = users ? JSON.parse(users) : [];
-        this.orders = orders ? JSON.parse(orders) : [];
-        this.nextStudentNumber = nextStudentNum ? parseInt(nextStudentNum) : 0;
+            this.users = users ? JSON.parse(users) : [];
+            this.orders = orders ? JSON.parse(orders) : [];
+            this.nextStudentNumber = nextStudentNum ? parseInt(nextStudentNum) : 0;
+
+            // Validate data structure
+            if (!Array.isArray(this.users)) this.users = [];
+            if (!Array.isArray(this.orders)) this.orders = [];
+            if (isNaN(this.nextStudentNumber)) this.nextStudentNumber = 0;
+
+            console.log('Data loaded successfully:', { users: this.users.length, orders: this.orders.length });
+        } catch (error) {
+            console.error('Error loading data:', error);
+            this.users = [];
+            this.orders = [];
+            this.nextStudentNumber = 0;
+        }
     }
 
     saveData() {
-        localStorage.setItem('laundry_users', JSON.stringify(this.users));
-        localStorage.setItem('laundry_orders', JSON.stringify(this.orders));
-        localStorage.setItem('laundry_next_student_number', this.nextStudentNumber.toString());
+        try {
+            localStorage.setItem('laundry_users', JSON.stringify(this.users));
+            localStorage.setItem('laundry_orders', JSON.stringify(this.orders));
+            localStorage.setItem('laundry_next_student_number', this.nextStudentNumber.toString());
+            console.log('Data saved successfully');
+        } catch (error) {
+            console.error('Error saving data:', error);
+            this.showNotification('Error saving data. Please try again.', 'error');
+        }
     }
 
     // Session Management
@@ -64,6 +90,7 @@ class LaundryApp {
 
         // Student forms
         document.getElementById('laundryOrderForm').addEventListener('submit', (e) => this.handleNewOrder(e));
+        document.getElementById('editOrderBtn').addEventListener('click', () => this.enableOrderEditing());
 
         // Vendor actions
         document.getElementById('scanQrBtn').addEventListener('click', () => this.handleQrScan());
@@ -96,9 +123,16 @@ class LaundryApp {
         const password = document.getElementById('loginPassword').value;
         const role = document.getElementById('loginRole').value;
 
+        // Find user by email and role
         const user = this.users.find(u => u.email === email && u.role === role);
         
         if (user) {
+            // Verify password if provided (for demo, we'll do simple string comparison)
+            if (password && user.password !== password) {
+                this.showNotification('Invalid password', 'error');
+                return;
+            }
+            
             this.currentUser = user;
             this.saveSession(user);
             this.showDashboard();
@@ -115,7 +149,13 @@ class LaundryApp {
         const password = document.getElementById('signupPassword').value;
         const role = document.getElementById('signupRole').value;
 
-        // Check if email already exists
+        // Validate password strength
+        if (password && !this.validatePassword(password)) {
+            this.showNotification('Password must be at least 8 characters with uppercase letter and symbol', 'error');
+            return;
+        }
+
+        // Check if email already exists for any role
         if (this.users.find(u => u.email === email)) {
             this.showNotification('Email already exists', 'error');
             return;
@@ -132,10 +172,11 @@ class LaundryApp {
             id: this.generateId(),
             name,
             email,
-            password,
+            password: password || '', // Store password as-is for demo
             role,
             studentId,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            lastLogin: null
         };
 
         this.users.push(newUser);
@@ -196,6 +237,80 @@ class LaundryApp {
         this.updateCurrentOrderStatus();
         this.updateOrderHistory();
         this.updateNewOrderForm();
+        this.initializeLaundryItems();
+    }
+
+    // Initialize laundry items selection interface
+    initializeLaundryItems() {
+        const tableBody = document.getElementById('laundryItemsTable');
+        if (!tableBody) return;
+
+        // Clear existing items
+        tableBody.innerHTML = '';
+        this.currentOrderItems = {};
+
+        // Create items from the laundry items list
+        this.laundryItems.forEach(item => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'table-row';
+            rowDiv.innerHTML = `
+                <div class="item-name">${item}</div>
+                <div class="quantity-controls">
+                    <button type="button" class="quantity-btn" onclick="app.decreaseQuantity('${item}')">-</button>
+                    <span class="quantity-display" id="qty-${item}">0</span>
+                    <button type="button" class="quantity-btn" onclick="app.increaseQuantity('${item}')">+</button>
+                </div>
+            `;
+            tableBody.appendChild(rowDiv);
+            this.currentOrderItems[item] = 0;
+        });
+
+        this.updateTotal();
+    }
+
+    // Handle quantity increase
+    increaseQuantity(item) {
+        if (this.currentOrderItems[item] === undefined) {
+            this.currentOrderItems[item] = 0;
+        }
+        this.currentOrderItems[item]++;
+        this.updateQuantityDisplay(item);
+        this.updateTotal();
+    }
+
+    // Handle quantity decrease
+    decreaseQuantity(item) {
+        if (this.currentOrderItems[item] === undefined) {
+            this.currentOrderItems[item] = 0;
+        }
+        if (this.currentOrderItems[item] > 0) {
+            this.currentOrderItems[item]--;
+            this.updateQuantityDisplay(item);
+            this.updateTotal();
+        }
+    }
+
+    // Update quantity display for specific item
+    updateQuantityDisplay(item) {
+        const display = document.getElementById(`qty-${item}`);
+        if (display) {
+            display.textContent = this.currentOrderItems[item] || 0;
+        }
+    }
+
+    // Update total items count
+    updateTotal() {
+        const total = Object.values(this.currentOrderItems).reduce((sum, qty) => sum + qty, 0);
+        const totalDisplay = document.getElementById('totalItems');
+        if (totalDisplay) {
+            totalDisplay.textContent = total;
+        }
+    }
+
+    // Enable order editing (before confirmation)
+    enableOrderEditing() {
+        // This will be implemented when we add order editing functionality
+        this.showNotification('Order editing enabled', 'success');
     }
 
     updateCurrentOrderStatus() {
@@ -252,7 +367,8 @@ class LaundryApp {
                     <span class="order-date">${this.formatDate(order.createdAt)}</span>
                 </div>
                 <div class="order-details">
-                    <p><strong>Items:</strong> ${order.items}</p>
+                    <p><strong>Items:</strong> ${this.formatOrderItems(order.items)}</p>
+                    <p><strong>Total Items:</strong> ${order.totalItems || Object.values(order.items).reduce((sum, qty) => sum + qty, 0)}</p>
                     <p><strong>Status:</strong> <span class="status-${order.status}">${this.getStatusText(order.status)}</span></p>
                     ${order.completedAt ? `<p><strong>Completed:</strong> ${this.formatDate(order.completedAt)}</p>` : ''}
                 </div>
@@ -295,7 +411,8 @@ class LaundryApp {
                     <div class="order-details">
                         <p><strong>Student:</strong> ${student ? student.name : 'Unknown'}</p>
                         <p><strong>Student ID:</strong> ${order.studentId}</p>
-                        <p><strong>Items:</strong> ${order.items}</p>
+                        <p><strong>Items:</strong> ${this.formatOrderItems(order.items)}</p>
+                        <p><strong>Total Items:</strong> ${order.totalItems || Object.values(order.items).reduce((sum, qty) => sum + qty, 0)}</p>
                         ${order.specialInstructions ? `<p><strong>Instructions:</strong> ${order.specialInstructions}</p>` : ''}
                     </div>
                     <div class="order-actions">
@@ -328,7 +445,8 @@ class LaundryApp {
                     <div class="order-details">
                         <p><strong>Student:</strong> ${student ? student.name : 'Unknown'}</p>
                         <p><strong>Student ID:</strong> ${order.studentId}</p>
-                        <p><strong>Items:</strong> ${order.items}</p>
+                        <p><strong>Items:</strong> ${this.formatOrderItems(order.items)}</p>
+                        <p><strong>Total Items:</strong> ${order.totalItems || Object.values(order.items).reduce((sum, qty) => sum + qty, 0)}</p>
                         <p><strong>Status:</strong> <span class="status-${order.status}">${this.getStatusText(order.status)}</span></p>
                     </div>
                     <div class="order-actions">
@@ -345,13 +463,28 @@ class LaundryApp {
     // Order Management
     handleNewOrder(e) {
         e.preventDefault();
-        const items = document.getElementById('laundryItems').value;
         const specialInstructions = document.getElementById('specialInstructions').value;
+
+        // Validate that at least one item is selected
+        const totalItems = Object.values(this.currentOrderItems).reduce((sum, qty) => sum + qty, 0);
+        if (totalItems === 0) {
+            this.showNotification('Please select at least one item', 'error');
+            return;
+        }
+
+        // Filter out items with 0 quantity
+        const selectedItems = {};
+        Object.keys(this.currentOrderItems).forEach(item => {
+            if (this.currentOrderItems[item] > 0) {
+                selectedItems[item] = this.currentOrderItems[item];
+            }
+        });
 
         const newOrder = {
             id: this.generateId(),
             studentId: this.currentUser.studentId,
-            items,
+            items: selectedItems, // Now an object with item names and quantities
+            totalItems: totalItems,
             specialInstructions,
             status: 'pending',
             createdAt: new Date().toISOString(),
@@ -364,11 +497,16 @@ class LaundryApp {
         this.saveData();
 
         // Clear form
-        document.getElementById('laundryItems').value = '';
+        this.initializeLaundryItems(); // Reset the laundry items selection
         document.getElementById('specialInstructions').value = '';
 
         this.updateStudentDashboard();
         this.showNotification('Order placed successfully!', 'success');
+        
+        // Redirect to QR page
+        setTimeout(() => {
+            window.location.href = `qr-page.html?orderId=${newOrder.id}`;
+        }, 1500);
     }
 
     confirmOrder(orderId) {
@@ -461,6 +599,30 @@ class LaundryApp {
     // Utility Functions
     generateId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    // Format order items for display
+    formatOrderItems(items) {
+        if (typeof items === 'string') {
+            return items; // Legacy format
+        }
+        
+        if (typeof items === 'object' && items !== null) {
+            return Object.entries(items)
+                .filter(([item, qty]) => qty > 0)
+                .map(([item, qty]) => `${qty} ${item}`)
+                .join(', ');
+        }
+        
+        return 'No items';
+    }
+
+    // Password validation function
+    validatePassword(password) {
+        if (password.length < 8) return false;
+        if (!/[A-Z]/.test(password)) return false; // Must have uppercase
+        if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) return false; // Must have symbol
+        return true;
     }
 
     formatDate(dateString) {

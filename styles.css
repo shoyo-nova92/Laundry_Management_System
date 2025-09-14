@@ -448,6 +448,199 @@ body {
     margin-bottom: 20px;
 }
 
+/* Laundry Items Selection */
+.laundry-items-section {
+    margin-bottom: 25px;
+}
+
+.laundry-items-section h4 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #f8f9fa;
+    padding-bottom: 8px;
+}
+
+/* Table Layout */
+.laundry-table {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.table-header {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 600;
+    color: #333;
+}
+
+.header-item {
+    flex: 1;
+    padding: 15px;
+    text-align: left;
+}
+
+.header-quantity {
+    width: 200px;
+    padding: 15px;
+    text-align: center;
+}
+
+.table-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.table-row {
+    display: flex;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+    background-color: #f8f9fa;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.item-name {
+    flex: 1;
+    padding: 15px;
+    color: #333;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.quantity-controls {
+    width: 200px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.quantity-btn {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #667eea;
+    background: #667eea;
+    color: white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background: #5a6fd8;
+    border-color: #5a6fd8;
+}
+
+.quantity-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #e9ecef;
+    border-color: #e9ecef;
+    color: #6c757d;
+}
+
+.quantity-display {
+    width: 50px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.table-footer {
+    display: flex;
+    background: #f8f9fa;
+    border-top: 2px solid #e9ecef;
+    font-weight: 600;
+    color: #333;
+}
+
+.footer-label {
+    flex: 1;
+    padding: 15px;
+    text-align: left;
+}
+
+.footer-total {
+    width: 200px;
+    padding: 15px;
+    text-align: center;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    margin: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+}
+
+.order-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.order-actions .btn {
+    min-width: 120px;
+}
+
+/* Responsive adjustments for laundry items */
+@media (max-width: 768px) {
+    .laundry-items-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .laundry-item {
+        padding: 10px;
+    }
+    
+    .item-name {
+        font-size: 0.9rem;
+    }
+    
+    .quantity-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .quantity-display {
+        min-width: 35px;
+        font-size: 14px;
+        padding: 4px 6px;
+    }
+    
+    .order-actions {
+        flex-direction: column;
+    }
+    
+    .order-actions .btn {
+        width: 100%;
+    }
+}
+
 /* Utility Classes */
 .text-center { text-align: center; }
 .text-right { text-align: right; }

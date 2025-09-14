@@ -90,15 +90,33 @@
             <div id="newOrderForm" class="card">
                 <h3>Place New Order</h3>
                 <form id="laundryOrderForm">
-                    <div class="form-group">
-                        <label for="laundryItems">Laundry Items:</label>
-                        <textarea id="laundryItems" placeholder="e.g., 2 shirts, 1 jeans, 3 t-shirts" required></textarea>
+                    <!-- Laundry Items Selection -->
+                    <div class="laundry-items-section">
+                        <h4>Select Items</h4>
+                        <div class="laundry-table">
+                            <div class="table-header">
+                                <div class="header-item">Item</div>
+                                <div class="header-quantity">Quantity</div>
+                            </div>
+                            <div class="table-body" id="laundryItemsTable">
+                                <!-- Items will be populated by JavaScript -->
+                            </div>
+                            <div class="table-footer">
+                                <div class="footer-label">Total</div>
+                                <div class="footer-total" id="totalItems">0</div>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="form-group">
                         <label for="specialInstructions">Special Instructions:</label>
                         <textarea id="specialInstructions" placeholder="Any special care instructions..."></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Place Order</button>
+                    
+                    <div class="order-actions">
+                        <button type="button" id="editOrderBtn" class="btn btn-secondary" style="display: none;">Edit Order</button>
+                        <button type="submit" class="btn btn-primary">Confirm your order</button>
+                    </div>
                 </form>
             </div>
 
